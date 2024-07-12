@@ -46,7 +46,6 @@ exports.signin = async( req,res,next)=>{
     }
 }
 exports.google = async ( req,res,next)=>{
-    console.log('hello');
     const {email,name,googlePhotoUrl}=req.body;
     try{
         const user=await User.findOne({email});
