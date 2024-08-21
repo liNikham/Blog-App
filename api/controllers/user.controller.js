@@ -2,15 +2,14 @@ const User = require('../models/User.model.js');
 const {errorHandler} = require('../utils/error.js');
 const bcrypt = require('bcryptjs')
  exports.updateUser = async(req,res,next)=>{
-    console.log(req.user.id);
-    console.log(req.params.userId);
+   
       if(req.user.id !== req.params.userId) {
         return next(errorHandler(403," You are not allowed to Update this Uses"));
       }
       
       
       if(req.body.password){
-        console.log("inside password")
+     
         if(req.body.password.length < 6){
              return next(errorHandler(400,"Password must be at least 6 characters"));
         }
@@ -30,6 +29,7 @@ const bcrypt = require('bcryptjs')
         if(req.body.username.match(/[^a-zA-Z0-9]+$/)){
             return next(errorHandler(400, "Username must contain only letters and numbers"));
         }
+      }
         try{
             const updatedUser = await User.findByIdAndUpdate(req.params.userId,{
                  $set : {
@@ -47,5 +47,5 @@ const bcrypt = require('bcryptjs')
             next(error)
         }
       }
- }
+ 
 
