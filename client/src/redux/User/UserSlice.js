@@ -47,10 +47,15 @@ import { set } from "mongoose";
         deleteUserFailure:(state,action)=>{
           state.loading=false,
           state.error=action.payload
+        },
+        signOutSuccess:(state)=>{
+          state.currentUser=null,
+          state.loading=false,
+          state.error=null
         }
 
       }
  })
 
- export const {signInStart,signInSuccess,signInFailure,updateStart,updateFailure,updateSuccess,deleteUserStart,deleteUserFailure,deleteUserSuccess} = userSlice.actions;
+ export const {signInStart,signInSuccess,signInFailure,updateStart,updateFailure,updateSuccess,deleteUserStart,deleteUserFailure,deleteUserSuccess,signOutSuccess} = userSlice.actions;
  export default userSlice.reducer;

@@ -8,7 +8,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import {updateStart,updateSuccess,updateFailure} from '../redux/User/UserSlice';
 import { useDispatch } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { deleteUserStart, deleteUserFailure, deleteUserSuccess } from '../redux/User/UserSlice';
+import { deleteUserStart, deleteUserFailure, deleteUserSuccess,signOutSuccess } from '../redux/User/UserSlice';
 function DashProfile() {
   const {currentUser , err }= useSelector(state=>state.user);
   const [imageFile,setImageFile] = useState('');
@@ -22,6 +22,23 @@ function DashProfile() {
   const [error,setError]=useState(null);
   const filePickerRef= useRef(null);
   const dispatch= useDispatch();
+  const handleSignOut = async()=>{
+    try{
+      const res = await fetch('/api/user/signout',{
+        method:'POST',
+      })
+      const data = res.json();
+      if(!res.ok){
+          console.log(data.message);
+      }
+      else{
+           dispatch(signOutSuccess());
+      }
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
   const handleInputChange=(e)=>{
     setFormData({
       ...formData,
@@ -176,7 +193,7 @@ function DashProfile() {
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
         <span className='cursor-pointer' onClick={()=>setShowModal(true)}> Delete Account</span>
-        <span className='cursor-pointer'> Sign Out</span>
+        <span className='cursor-pointer' onClick={handleSignOut}> Sign Out</span>
       </div>
       {updatedUser && (
         <Alert color='success' className='mt-5'>

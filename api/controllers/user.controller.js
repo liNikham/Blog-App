@@ -61,4 +61,14 @@ exports.deleteUser = async(req,res,next)=>{
       next(error);
     }
 }
+exports.signoutUser = (req,res)=>{
+  try{
+
+    res.clearCookie('token');
+    return res.status(200).json('User has been signed out');
+  }
+  catch(err){
+    next(err);
+  }
+}
 
