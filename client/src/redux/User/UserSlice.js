@@ -34,10 +34,23 @@ import { set } from "mongoose";
         updateFailure:(state,action)=>{
           state.loading=false,
           state.error=action.payload
+        },
+        deleteUserStart:(state,action)=>{
+           state.loading=true,
+           state.error=null
+        },
+        deleteUserSuccess:(state,action)=>{
+           state.currentUser=null,
+           state.loading=false,
+           state.error=null
+        },
+        deleteUserFailure:(state,action)=>{
+          state.loading=false,
+          state.error=action.payload
         }
 
       }
  })
 
- export const {signInStart,signInSuccess,signInFailure,updateStart,updateFailure,updateSuccess} = userSlice.actions;
+ export const {signInStart,signInSuccess,signInFailure,updateStart,updateFailure,updateSuccess,deleteUserStart,deleteUserFailure,deleteUserSuccess} = userSlice.actions;
  export default userSlice.reducer;
