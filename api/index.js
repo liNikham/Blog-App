@@ -13,11 +13,13 @@ app.use(cookieParser());
 
 const userRoutes= require('./routes/User.Routes');
 const authRoutes = require('./routes/Auth.Routes')
+const postRouter = require('./routes/Post.Routes');
 mongoose.connect(process.env.DB_Connection)
 .then(()=> console.log('MongoDb connected'))
 .catch((err)=>console.log(err))
 app.use('/api/user',userRoutes)
 app.use('/api/auth',authRoutes);
+app.use('/api/post',postRouter);
 app.listen(3000,()=>{
     console.log('Server is running on port 3000!');
 })
