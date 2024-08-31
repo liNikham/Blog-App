@@ -1,10 +1,11 @@
-import { Button, FileInput, Select, TextInput } from 'flowbite-react'
+import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react'
 import {getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable} from 'firebase/storage'
 import {app} from '../firebase'
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 function CreatePost() {
   const [file, setFile] = useState(null);
@@ -78,6 +79,8 @@ function CreatePost() {
                   }
                 </Button>
               </div>
+              {imageUploadError && <Alert type='failure'>{imageUploadError}</Alert>}
+              { formData.imageUrl && <img src={formData.imageUrl} alt='preview' className='w-full h-72 '/>}
               <ReactQuill theme='snow' placeholder='Write something amazing...' className='h-72 mb-12' required />
               <Button type='submit' gradientDuoTone='purpleToPink' >Publish</Button>
         </form>
