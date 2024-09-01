@@ -3,17 +3,22 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { Table, TableRow } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { Modal, Button } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { set } from "mongoose";
 function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
   const [showMore,setShowMore] = useState(true);
+  const [showModal,setShowModal] = useState(false);
+  const [postIdToDelete,setPostIdToDelete] = useState(null);
   const handleShowMore = async ()=>{
      const startIndex = userPosts.length;
-     console.log(startIndex);
+     
      try{
         const res = await fetch(`/api/post/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`);
         const data = await res.json();
-        console.log(data);
+        
         if(res.ok){
           setUserPosts((prev)=> [...prev,...data.posts]
           )
@@ -45,7 +50,27 @@ function DashPosts() {
       fetchPosts();
     }
   }, [currentUser._id]);
-  console.log(userPosts);
+
+  const handleDeletePost = async ()=>{
+           setShowModal(false);
+           try{
+            const res = await fetch(`/api/post/deletePost/${postIdToDelete}/${currentUser._id}`,{
+              method:'DELETE'
+            });
+            const data = await res.json();
+              if(!res.ok){
+                console.log(data.message);
+              }
+              else{
+                setUserPosts((prev)=> prev.filter((post)=> post._id !== postIdToDelete));
+              }
+           }
+           catch(err){
+             console.log(err);
+           }
+           
+
+  }
   return (
     <div className="table-auto overflow-x-scroll mx-auto p-3 scrollbar-track-slate-100 scrollbar scrollbar-thumb-slate-300  dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.isAdmin && userPosts.length > 0 ? (
@@ -78,7 +103,12 @@ function DashPosts() {
                   </Table.Cell>
                   <Table.Cell>{post.category}</Table.Cell>
                   <Table.Cell>
-                     <span className="font-medium text-red-500 hover:underline cursor-pointer">
+                     <span onClick={
+                        ()=>{
+                          setShowModal(true);
+                          setPostIdToDelete(post._id);
+                        }
+                     } className="font-medium text-red-500 hover:underline cursor-pointer">
                        Delete
                      </span>
                   </Table.Cell>
@@ -102,6 +132,31 @@ function DashPosts() {
       ) : (
         <p> No Posts Yet </p>
       )}
+         <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="medium"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+              {" "}
+              Are you Sure you want to delete this Post ?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDeletePost}>
+                Yes I'm Sure !
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>
+                No,Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
