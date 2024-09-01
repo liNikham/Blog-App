@@ -41,7 +41,7 @@ function CreatePost() {
               getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
                 setImageUploadError(null);
                 setImageUploadProgress(null);
-                setFormData({...formData, imageUrl: downloadURL});
+                setFormData({...formData, image: downloadURL});
               }
               )
           }
