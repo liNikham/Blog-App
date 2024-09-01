@@ -115,7 +115,7 @@ function CreatePost() {
                 </Button>
               </div>
               {imageUploadError && <Alert type='failure'>{imageUploadError}</Alert>}
-              { formData.imageUrl && <img src={formData.imageUrl} alt='preview' className='w-full h-72 '/>}
+              { formData.image && <img src={formData.image} alt='preview' className='w-full h-72 '/>}
               <ReactQuill theme='snow' placeholder='Write something amazing...' className='h-72 mb-12' required onChange={
                 (value)=>setFormData({...formData, content: value})
               } />
