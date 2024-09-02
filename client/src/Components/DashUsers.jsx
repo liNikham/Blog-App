@@ -74,7 +74,23 @@ function DashPosts() {
 //   }
 
 const handleDeleteUser = async ()=>{
-
+    setShowModal(false);
+    console.log(userIdToDelete);
+  try{
+    const res = await fetch(`/api/user/delete/${userIdToDelete}`,{
+        method:'DELETE'
+        });
+    const data = await res.json();
+    if(!res.ok){
+        console.log(data.message);
+    }
+    else{
+        setUsers((prev)=> prev.filter((user)=> user._id !== userIdToDelete));
+    } 
+  }
+  catch(err){
+    console.log(err);
+  }
 }
   return (
     <div className="table-auto overflow-x-scroll mx-auto p-3 scrollbar-track-slate-100 scrollbar scrollbar-thumb-slate-300  dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
