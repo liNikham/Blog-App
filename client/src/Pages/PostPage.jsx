@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { Spinner } from 'flowbite-react';
+import CallToAction from '../Components/CallToAction';
 
 function PostPage() {
     const {postSlug} = useParams();
@@ -60,6 +61,10 @@ function PostPage() {
             <span className='italic'>{post && (post.content.length/1000).toFixed(0)}</span>
          </div>
          <div className='p-3 max-w-2xl mx-auto w-full post-content' dangerouslySetInnerHTML={{__html: post && post.content}}></div>
+
+         <div className='max-w-4xl mx-auto w-ful'>
+             <CallToAction/>
+         </div>
       </main>
   )
 }
