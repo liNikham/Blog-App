@@ -10,6 +10,14 @@ function CommentSection({postId}) {
   const [commentError, setCommentError] = useState('');
   const [comments, setComments] = useState([]);
   const navigate = useNavigate();
+  const handleEdit = (comment, editedContent) => {
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id ? { ...c, content: editedContent } : c
+      )
+    );
+  };
+  
   const handleSubmit = async (e) => {
    
 
@@ -137,7 +145,7 @@ function CommentSection({postId}) {
         {
           comments.map((comment)=>(
             
-             <Comment key={comment._id} comment={comment} onLike={handleLike} />
+             <Comment key={comment._id} comment={comment} onLike={handleLike} onEdit={handleEdit} />
           )
           )
         }
