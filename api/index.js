@@ -3,10 +3,10 @@ const app = express();
 const mongoose = require('mongoose')
 const dotenv= require('dotenv')
 const cookieParser = require('cookie-parser');
+const path = require('path');
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
-
 
 
 
@@ -19,10 +19,15 @@ const commentRoutes = require('./routes/Comment.Routes');
 mongoose.connect(process.env.DB_Connection)
 .then(()=> console.log('MongoDb connected'))
 .catch((err)=>console.log(err))
+
 app.use('/api/user',userRoutes)
 app.use('/api/auth',authRoutes);
 app.use('/api/post',postRoutes);
 app.use('/api/comment',commentRoutes);
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'client','dist','index.html'));
+})
+app.use(express.static(path.join(__dirname, 'client/dist')));
 app.listen(3000,()=>{
     console.log('Server is running on port 3000!');
 })
