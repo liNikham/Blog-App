@@ -27,7 +27,7 @@ app.use('/api/comment',commentRoutes);
 app.get('*',(req,res)=>{
     res.sendFile(path.join(__dirname,'client','dist','index.html'));
 })
-app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use(express.static(path.join(__dirname, '/client/dist')));
 app.listen(3000,()=>{
     console.log('Server is running on port 3000!');
 })
