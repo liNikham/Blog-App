@@ -19,17 +19,17 @@ const commentRoutes = require('./routes/Comment.Routes');
 mongoose.connect(process.env.DB_Connection)
 .then(()=> console.log('MongoDb connected'))
 .catch((err)=>console.log(err))
-
+const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
 app.use('/api/user',userRoutes)
 app.use('/api/auth',authRoutes);
 app.use('/api/post',postRoutes);
 app.use('/api/comment',commentRoutes);
-console.log("Static files served from:", path.join(__dirname, 'client', 'dist'));
-console.log("Serving index.html from:", path.join(__dirname, 'client', 'dist', 'index.html'));
+console.log("Serving static files from: ", clientDistPath);
+console.log("Serving index.html from: ", path.join(clientDistPath, 'index.html'));
 
-app.use(express.static(path.join(__dirname,'client','dist')));
+app.use(express.static(clientDistPath));
 app.get('*',(req,res)=>{
-    res.sendFile(path.join(__dirname,'client','dist','index.html'));
+    res.sendFile(path.join(clientDistPath,'index.html'));
 })
 app.listen(3000,()=>{
     console.log('Server is running on port 3000!');
